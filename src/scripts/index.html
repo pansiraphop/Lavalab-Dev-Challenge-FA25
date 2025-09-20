@@ -38,10 +38,6 @@
                     </svg>
                     <div class="logo">Tally</div>
                 </div>
-                <div class="user-profile">
-                    <div class="user-icon-placeholder"></div>
-                    <span>Pan Pitpreecha</span>
-                </div>
             </div>
             <ul class="nav-links">
                 <li class="active"><a href="#"><span class="icon-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.3408 13.4678C19.6378 13.4678 21.5 15.33 21.5 17.627C21.4998 19.9238 19.6377 21.7861 17.3408 21.7861C15.044 21.7861 13.1818 19.9237 13.1816 17.627C13.1816 15.33 15.0439 13.4678 17.3408 13.4678ZM3.19727 13.9043H9.24805C9.63274 13.9045 9.94434 14.2168 9.94434 14.6016V20.6523C9.94414 21.0369 9.63261 21.3484 9.24805 21.3486H3.19727C2.81252 21.3486 2.5002 21.037 2.5 20.6523V14.6016C2.5 14.2167 2.8124 13.9043 3.19727 13.9043ZM10.583 2.86426C10.8468 2.37873 11.5438 2.37873 11.8076 2.86426L15.5537 9.75781C15.8058 10.2221 15.4697 10.787 14.9414 10.7871H7.44922C6.92094 10.7869 6.58481 10.2221 6.83691 9.75781L10.583 2.86426Z" stroke="#262626"/></svg></span><span class="link-text">Materials</span></a></li>
@@ -50,17 +46,18 @@
                 <li><a href="#"><span class="icon-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 14C3 13.4477 3.44772 13 4 13H10C10.5523 13 11 13.4477 11 14V20C11 20.5523 10.5523 21 10 21H4C3.44772 21 3 20.5523 3 20V14Z" stroke="#262626"/><path d="M11 14C11 13.4477 11.4477 13 12 13H18C18.5523 13 19 13.4477 19 14V20C19 20.5523 18.5523 21 18 21H12C11.4477 21 11 20.5523 11 20V14Z" stroke="#262626"/><path d="M3 6C3 5.44772 3.44772 5 4 5H10C10.5523 5 11 5.44772 11 6V12C11 12.5523 10.5523 13 10 13H4C3.44772 13 3 12.5523 3 12V6Z" stroke="#262626"/><rect x="14" y="3" width="7" height="7" rx="3.5" stroke="#262626"/></svg></span><span class="link-text">Integrations</span></a></li>
             </ul>
             <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-icon-placeholder"></div>
+                    <span>Pan Pitpreecha</span>
+                </div>
                 <a href="#"><span class="icon-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 16L19 12M19 12L15 8M19 12H5" stroke="#A20F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 4H7C5.89543 4 5 4.89543 5 6V18C5 19.1046 5.89543 20 7 20H12" stroke="#A20F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="link-text">Logout</span></a>
             </div>
         </nav>
 
-        <main class="main-content">
+          <main class="main-content" id="materials-page">
             <header class="main-header">
                 <div class="header-left">
-                     <button class="icon-button" id="toggle-sidebar">
-                        ☰
-                    </button>
-                    <span class="back-arrow">←</span>
+                     <button class="icon-button" id="toggle-sidebar">☰</button>
                     <h1>Materials / Blanks</h1>
                 </div>
                 <div class="header-right">
@@ -69,7 +66,6 @@
                     <button class="action-button primary" id="add-new-btn">+ Add New</button>
                 </div>
             </header>
-
             <div class="inventory-list"></div>
         </main>
     </div>
@@ -83,8 +79,12 @@
                     <label for="new-name">Material Name</label>
                     <input type="text" id="new-name" placeholder="e.g., Gildan T-Shirt - Blue / XL" required>
                 </div>
+                 <div class="form-group">
+                    <label for="new-sku">SKU</label>
+                    <input type="text" id="new-sku" placeholder="e.g., GIL-TS-BL-XL">
+                </div>
                 <div class="form-group">
-                    <label for="new-stock">In Stock</label>
+                    <label for="new-stock">Quantity in Stock</label>
                     <input type="number" id="new-stock" value="0" min="0" required>
                 </div>
                 <button type="submit" class="action-button primary">Add Material</button>
@@ -98,6 +98,34 @@
             <h2>Order Queue</h2>
             <div id="order-queue-list">
                 </div>
+        </div>
+    </div>
+
+    <div id="eoq-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-btn" title="Close">&times;</button>
+            <h2>Economic Order Quantity (EOQ)</h2>
+            <p class="muted">Calculate the most cost-effective quantity to order for a material.</p><br> 
+            <form id="eoq-form">
+                <div class="form-group">
+                    <label for="monthly-demand">Monthly Demand (Total units sold per month)</label>
+                    <input type="number" id="monthly-demand" placeholder="e.g., 1200" required>
+                </div>
+                <div class="form-group">
+                    <label for="ordering-cost">Ordering Cost (Cost per order placed)</label>
+                    <input type="number" id="ordering-cost" placeholder="e.g., 20" required>
+                </div>
+                <div class="form-group">
+                    <label for="holding-cost">Holding Cost (Cost to hold one unit for a month)</label>
+                    <input type="number" id="holding-cost" placeholder="e.g., 5" required>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label for="eoq-result">Suggested Order Quantity for Upcoming Month</label>
+                    <input type="number" id="eoq-result" min="1">
+                </div>
+                <button type="submit" class="action-button primary">Apply Quantity</button>
+            </form>
         </div>
     </div>
 
